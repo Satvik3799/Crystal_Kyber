@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the source and destination paths
-SOURCE_PATH="/media/satvik/Study/M_tech/IITB/MTP/satvik/Crystal_kyber/Crystal_kyber_SDK"
+SOURCE_PATH="/media/satvik/Study/M_tech/IITB/MTP/satvik/Crystal_Kyber/Crystal_Kyber_SDK/key_gen/"
 CONTAINER_ID="15b1a3bbbc5f"
 DESTINATION_PATH="/home/ajit/ajit-toolchain/validation_ladder/cortos2_tests/Crystal_Kyber_SDK/Test/"
 
