@@ -1,2 +1,2 @@
-# Crystal_Kyber_SDK
+# Crystal_Kyber
 Crystal Kyber C code for AJIT Processor 
