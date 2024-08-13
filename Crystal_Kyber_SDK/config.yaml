@@ -22,8 +22,8 @@ Hardware:
       StartAddr: 0x0
       # EndAddr: ...
       # SizeInBytes: ...
-      # SizeInKiloBytes: 256
-      SizeInMegaBytes: 4096
+      SizeInKiloBytes: 1024
+      #SizeInMegaBytes: 128
       Permissions: RWXC
     MMIO: # Memory Mapped IO
       StartAddr: 0xFFFF0000  # physical address
@@ -70,7 +70,7 @@ Software:
   BuildAndExecute:
     # Optional: Specify the log level. Default is NONE.
     # ALL < TRACE < DEBUG < INFO < ERROR < CRITICAL < NONE
-    LogLevel: INFO
+    LogLevel: DEBUG
     OptimizationLevel: 2 # i.e. O2 (Accepted values: 0, 1, 2)
     # specify argument string for C compiler......
     EnableSerial: No # Yes/No (Default: Yes)

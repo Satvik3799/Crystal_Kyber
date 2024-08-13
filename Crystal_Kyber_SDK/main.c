@@ -31,12 +31,12 @@ void setup()
 	__ajit_serial_set_baudrate__ (115200, 50000000);
 	__ajit_serial_set_uart_reset__ (0);
 
-	cortos_printf ("enabled serial.\n");
+	CORTOS_DEBUG ("enabled serial.\n");
 
 	// enable interrupt controller for the current thread.
 
 	enableInterruptControllerAndAllInterrupts(0,0);
-	cortos_printf ("enabled interrupt controller.\n");
+	CORTOS_DEBUG ("enabled interrupt controller.\n");
 
 }
 
@@ -88,51 +88,17 @@ uint16_t barret_reduction(uint16_t c1) {
     return c;
 }
 
-void ntt_256(uint16_t *x, uint16_t *psis) {
-    uint16_t xe[128], xo[128];
-    uint16_t i;
-    for ( i = 0; i < 128; i++) {
-        xe[i] = x[2 * i];
-        xo[i] = x[2 * i + 1];
-    }
-    ct_ntt(xe, psis);
-    ct_ntt(xo, psis);
-    for ( i = 0; i < 128; i++) {
-        x[i] = xe[i];
-        x[i + 128] = xo[i];
-    }
-}
-
-
-void ct_ntt(uint16_t *a, uint16_t *psis) {
-    uint16_t l = (uint16_t)log2(n);
-    uint16_t v = n / 2;
-    uint16_t i,s;
-    for ( i = 0; i < l; i++) {
-        for ( s = 0; s < v; s++) {
-            uint16_t ie, io, iw;
-            addr_gen(s, i, l, v, &ie, &io, &iw);
-            uint16_t S = psis[iw];
-            uint16_t U = a[ie];
-            uint16_t V = a[io];
-            uint16_t x, y;
-            butterfly_dit(S, U, V, &x, &y);
-            a[ie] = x;
-            a[io] = y;
-        }
-    }
-}
 
 int main () 
 {	
-cortos_printf ("main start\n");
-cortos_printf("Crystal_kyber running\n");
+CORTOS_DEBUG ("main start\n");
+CORTOS_DEBUG("Crystal_kyber running\n");
 
     //Loop variables
-    // uint16_t x, i, j;
+    uint16_t x, i, j, s;
     //For Debugging
     // Pre-computed arrays - psis, inv_psis, pwmf
-    cortos_printf ("psis start\n");
+    CORTOS_DEBUG ("psis start\n");
 
     //Size = 256B 
     uint16_t psis[n] = {
@@ -147,19 +113,92 @@ cortos_printf("Crystal_kyber running\n");
     };
 
 //     for ( x = 0; x < n; x++) {
-//         cortos_printf("psis loop counter - %d\n", x);
-//         cortos_printf("%d ", psis[x]);
-//         cortos_printf("psis loop counter - %d\n", x);
+//         CORTOS_DEBUG("psis loop counter - %d\n", x);
+//         CORTOS_DEBUG("%d ", psis[x]);
+//         CORTOS_DEBUG("psis loop counter - %d\n", x);
         
 //     }
-//     cortos_printf("\n");
+//     CORTOS_DEBUG("\n");
 
     //Size = 512B
     uint16_t s_0[256] = {0, 1, 0, 0, 0, 0, 1, 3327, 0, 3328, 3328, 1, 2, 1, 3328, 1, 1, 0, 3328, 0, 1, 0, 3326, 3328, 1, 3327, 2, 0, 1, 1, 0, 0, 3328, 3328, 1, 3328, 1, 0, 0, 3328, 2, 2, 3327, 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 3328, 1, 1, 0, 0, 0, 0, 1, 1, 3328, 1, 0, 0, 1, 3328, 0, 0, 2, 0, 0, 0, 3328, 3327, 3327, 0, 3328, 3328, 0, 3327, 1, 3328, 1, 3328, 0, 2, 0, 3327, 1, 0, 1, 1, 0, 0, 3327, 3328, 0, 1, 0, 0, 3328, 0, 0, 3328, 3328, 0, 3328, 3327, 1, 1, 3328, 0, 1, 1, 3328, 0, 3328, 3326, 0, 0, 3328, 0, 2, 3328, 0, 1, 0, 0, 2, 3328, 0, 3328, 3328, 0, 0, 0, 1, 2, 3328, 3327, 1, 0, 2, 2, 2, 3327, 2, 0, 0, 1, 0, 3328, 3328, 0, 1, 0, 0, 0, 3328, 3328, 1, 3, 3328, 1, 3328, 2, 0, 0, 0, 2, 0, 1, 1, 3328, 1, 0, 3328, 3328, 0, 3328, 3328, 1, 3328, 3327, 1, 0, 1, 3328, 1, 3328, 1, 3328, 1, 0, 3327, 3328, 1, 3, 3327, 0, 1, 3327, 3, 0, 1, 1, 1, 1, 3327, 3328, 3328, 3328, 1, 3326, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 0, 3328, 3328, 3328, 1, 3, 3328, 0, 3328, 2, 1, 3327, 0, 1, 1, 0, 3327, 3328, 1, 1, 0, 3328, 3328, 3328, 0, 3328, 0, 0, 3328, 0};
     
-    cortos_printf("NTT Start\n");
-    ntt_256(s_0, psis);
-    cortos_printf("NTT End\n");
+    // for ( i = 0; i < 10; i++) {
+    //     CORTOS_DEBUG("index = %d ---> %d ", i, s_0[i]);
+    // }
+
+    CORTOS_DEBUG("NTT Start\n");
+
+    uint16_t l = (uint16_t)log2(n);
+    uint16_t v = n / 2;
+    
+    
+    uint16_t xe[128], xo[128];
+
+    for ( i = 0; i < 128; i++) {
+        xe[i] = s_0[2 * i];
+        xo[i] = s_0[2 * i + 1];
+    }
+
+    CORTOS_DEBUG(" Pass odd array to ct_ntt \n");
+    //Pass even array to ct_ntt
+    for ( i = 0; i < l; i++) {
+        for ( s = 0; s < v; s++) {
+            uint16_t ie, io, iw;
+            addr_gen(s, i, l, v, &ie, &io, &iw);
+            uint16_t S = psis[iw];
+            uint16_t U = xe[ie];
+            uint16_t V = xe[io];
+            uint16_t x, y;
+            butterfly_dit(S, U, V, &x, &y);
+            xe[ie] = x;
+            xe[io] = y;
+        }
+    }
+
+    // for ( i = 0; i < 10; i++) {
+    //     CORTOS_DEBUG("index = %d ---> %d ", i, xe[i]);
+    // }
+    
+    CORTOS_DEBUG(" Pass odd array to ct_ntt \n");
+    
+    for ( i = 0; i < l; i++) {
+        for ( s = 0; s < v; s++) {
+            uint16_t ie, io, iw;
+            addr_gen(s, i, l, v, &ie, &io, &iw);
+            uint16_t S = psis[iw];
+            uint16_t U = xo[ie];
+            uint16_t V = xo[io];
+            uint16_t x, y;
+            butterfly_dit(S, U, V, &x, &y);
+            xo[ie] = x;
+            xo[io] = y;
+        }
+    }
+
+    // for ( i = 0; i < 10; i++) {
+    //     CORTOS_DEBUG("index = %d ---> %d ", i, xo[i]);
+    // }
+
+    // for ( i = 0; i < 128; i++) {
+    //     s_0[i] = xe[i];
+    //     s_0[i + 128] = xo[i];
+    // }
+
+
+    // CORTOS_DEBUG("Printing s_0 array\n");
+    
+
+    // CORTOS_DEBUG("index ---> %d ", s_0[0]);
+
+    // for ( i = 0; i < 10; i++) {
+    //     // CORTOS_DEBUG("index = %d ---> %d ", i, s_0[i]);
+    // }
+    
+    CORTOS_DEBUG("\n");
+
+
+    CORTOS_DEBUG("NTT End\n");
 
     CORTOS_DEBUG("Int main End!!");
     return 0;
