@@ -14,8 +14,7 @@
 // #define inv_psin 1175
 // #define k 2
 
-#define ACCELERATOR_REGISTERS_BASE_ADDRESS 0xFFFF4000
-
+// #define ACCELERATOR_REGISTERS_BASE_ADDRESS 0xFFFF4000
 
 // Function prototypes
 void addr_gen(uint16_t s, uint16_t i, uint16_t l, uint16_t v, uint16_t *ie_r, uint16_t *io_r, uint16_t *iw);
@@ -41,17 +40,17 @@ void setup()
 }
 
 
-void write_to_accelerator_register (uint16_t reg_id, uint16_t val)
-{
-	__ajit_store_word_mmu_bypass__(val, ACCELERATOR_REGISTERS_BASE_ADDRESS + (reg_id));
-}
+// void write_to_accelerator_register (uint16_t reg_id, uint16_t val)
+// {
+// 	__ajit_store_word_mmu_bypass__(val, ACCELERATOR_REGISTERS_BASE_ADDRESS + (reg_id));
+// }
 
 
-uint16_t read_from_accelerator_register (uint16_t reg_id)
-{
-	uint16_t val = __ajit_load_word_mmu_bypass__ (ACCELERATOR_REGISTERS_BASE_ADDRESS + (reg_id));
-	return(val);
-}
+// uint16_t read_from_accelerator_register (uint16_t reg_id)
+// {
+// 	uint16_t val = __ajit_load_word_mmu_bypass__ (ACCELERATOR_REGISTERS_BASE_ADDRESS + (reg_id));
+// 	return(val);
+// }
 
 void my_external_interrupt_handler ()
 {
@@ -94,8 +93,11 @@ int main ()
 CORTOS_DEBUG ("main start\n");
 CORTOS_DEBUG("Crystal_kyber running\n");
 
+// uint16_t q = 3329;
+// uint16_t n = 128;
+
     //Loop variables
-    uint16_t x, i, j, s;
+    uint16_t i, j;
     //For Debugging
     // Pre-computed arrays - psis, inv_psis, pwmf
     CORTOS_DEBUG ("psis start\n");
@@ -112,13 +114,13 @@ CORTOS_DEBUG("Crystal_kyber running\n");
         885, 2154
     };
 
-//     for ( x = 0; x < n; x++) {
-//         CORTOS_DEBUG("psis loop counter - %d\n", x);
-//         CORTOS_DEBUG("%d ", psis[x]);
-//         CORTOS_DEBUG("psis loop counter - %d\n", x);
+    // for ( i = 0; i < n; i++) {
+    //     CORTOS_DEBUG("psis loop counter - %d\n", i);
+    //     CORTOS_DEBUG("%d ", psis[i]);
+    //     CORTOS_DEBUG("psis loop counter - %d\n", i);
         
-//     }
-//     CORTOS_DEBUG("\n");
+    // }
+    CORTOS_DEBUG("\n");
 
     //Size = 512B
     uint16_t s_0[256] = {0, 1, 0, 0, 0, 0, 1, 3327, 0, 3328, 3328, 1, 2, 1, 3328, 1, 1, 0, 3328, 0, 1, 0, 3326, 3328, 1, 3327, 2, 0, 1, 1, 0, 0, 3328, 3328, 1, 3328, 1, 0, 0, 3328, 2, 2, 3327, 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 3328, 1, 1, 0, 0, 0, 0, 1, 1, 3328, 1, 0, 0, 1, 3328, 0, 0, 2, 0, 0, 0, 3328, 3327, 3327, 0, 3328, 3328, 0, 3327, 1, 3328, 1, 3328, 0, 2, 0, 3327, 1, 0, 1, 1, 0, 0, 3327, 3328, 0, 1, 0, 0, 3328, 0, 0, 3328, 3328, 0, 3328, 3327, 1, 1, 3328, 0, 1, 1, 3328, 0, 3328, 3326, 0, 0, 3328, 0, 2, 3328, 0, 1, 0, 0, 2, 3328, 0, 3328, 3328, 0, 0, 0, 1, 2, 3328, 3327, 1, 0, 2, 2, 2, 3327, 2, 0, 0, 1, 0, 3328, 3328, 0, 1, 0, 0, 0, 3328, 3328, 1, 3, 3328, 1, 3328, 2, 0, 0, 0, 2, 0, 1, 1, 3328, 1, 0, 3328, 3328, 0, 3328, 3328, 1, 3328, 3327, 1, 0, 1, 3328, 1, 3328, 1, 3328, 1, 0, 3327, 3328, 1, 3, 3327, 0, 1, 3327, 3, 0, 1, 1, 1, 1, 3327, 3328, 3328, 3328, 1, 3326, 0, 1, 1, 1, 0, 0, 1, 0, 0, 2, 0, 3328, 3328, 3328, 1, 3, 3328, 0, 3328, 2, 1, 3327, 0, 1, 1, 0, 3327, 3328, 1, 1, 0, 3328, 3328, 3328, 0, 3328, 0, 0, 3328, 0};
@@ -135,17 +137,17 @@ CORTOS_DEBUG("Crystal_kyber running\n");
     
     uint16_t xe[128], xo[128];
 
-    for ( i = 0; i < 128; i++) {
-        xe[i] = s_0[2 * i];
-        xo[i] = s_0[2 * i + 1];
-    }
+    // for ( i = 0; i < 128; i++) {
+    //     xe[i] = s_0[2 * i];
+    //     xo[i] = s_0[2 * i + 1];
+    // }
 
     CORTOS_DEBUG(" Pass odd array to ct_ntt \n");
     //Pass even array to ct_ntt
     for ( i = 0; i < l; i++) {
-        for ( s = 0; s < v; s++) {
+        for ( j = 0; j < v; j++) {
             uint16_t ie, io, iw;
-            addr_gen(s, i, l, v, &ie, &io, &iw);
+            addr_gen(j, i, l, v, &ie, &io, &iw);
             uint16_t S = psis[iw];
             uint16_t U = xe[ie];
             uint16_t V = xe[io];
@@ -163,9 +165,9 @@ CORTOS_DEBUG("Crystal_kyber running\n");
     CORTOS_DEBUG(" Pass odd array to ct_ntt \n");
     
     for ( i = 0; i < l; i++) {
-        for ( s = 0; s < v; s++) {
+        for ( j = 0; j < v; j++) {
             uint16_t ie, io, iw;
-            addr_gen(s, i, l, v, &ie, &io, &iw);
+            addr_gen(j, i, l, v, &ie, &io, &iw);
             uint16_t S = psis[iw];
             uint16_t U = xo[ie];
             uint16_t V = xo[io];
@@ -180,20 +182,20 @@ CORTOS_DEBUG("Crystal_kyber running\n");
     //     CORTOS_DEBUG("index = %d ---> %d ", i, xo[i]);
     // }
 
-    // for ( i = 0; i < 128; i++) {
-    //     s_0[i] = xe[i];
-    //     s_0[i + 128] = xo[i];
-    // }
+    for ( i = 0; i < 128; i++) {
+        s_0[i] = xe[i];
+        s_0[i + 128] = xo[i];
+    }
 
 
-    // CORTOS_DEBUG("Printing s_0 array\n");
+    CORTOS_DEBUG("Printing s_0 array\n");
     
 
-    // CORTOS_DEBUG("index ---> %d ", s_0[0]);
+    CORTOS_DEBUG("index ---> %d ", s_0[0]);
 
-    // for ( i = 0; i < 10; i++) {
-    //     // CORTOS_DEBUG("index = %d ---> %d ", i, s_0[i]);
-    // }
+    for ( i = 0; i < 10; i++) {
+        CORTOS_DEBUG("index = %d ---> %d ", i, s_0[i]);
+    }
     
     CORTOS_DEBUG("\n");
 
