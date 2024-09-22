@@ -1,16 +1,8 @@
 #include <stdint.h>
 #include "core_portme.h"
 #include "ajit_access_routines.h"
-#include <cortos.h>
 
 volatile int volatile serial_print_done_0 = 0;
-
-void my_external_interrupt_handler ()
-{
-
-}
-
-
 int main(void)
 {
 
@@ -24,7 +16,7 @@ int main(void)
 		__ajit_serial_configure__ (1,0,0);
 
 		// Print
-		CORTOS_DEBUG("Hello world from thread %d!\n\n", thread_id);
+		ee_printf("Hello world from thread %d!\n\n", thread_id);
 		serial_print_done_0 = 1;
 	}
 	else
@@ -36,10 +28,9 @@ int main(void)
 		}
 
 		// Print
-		CORTOS_DEBUG("Hello world from thread %d!\n\n", thread_id);
+		ee_printf("Hello world from thread %d!\n\n", thread_id);
 		
 	}
 	return(0);
 }
-
 
