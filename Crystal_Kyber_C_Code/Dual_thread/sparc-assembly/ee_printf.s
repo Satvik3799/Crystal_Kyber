@@ -442,7 +442,7 @@ uart_send_char:
 	or	%g2, 512, %g2
 .L140:
 #APP
-! 631 "/home/satvik/AJIT/ajit-toolchain/AjitPublicResources/tools/minimal_printf_timer/src/ee_printf.c" 1
+! 631 "/home/ajit/ajit-toolchain/AjitPublicResources/tools/minimal_printf_timer/src/ee_printf.c" 1
 	lda [%g2] 32, %g1
 	
 ! 0 "" 2
@@ -592,7 +592,7 @@ ee_printf:
 	 nop
 .L367:
 #APP
-! 631 "/home/satvik/AJIT/ajit-toolchain/AjitPublicResources/tools/minimal_printf_timer/src/ee_printf.c" 1
+! 631 "/home/ajit/ajit-toolchain/AjitPublicResources/tools/minimal_printf_timer/src/ee_printf.c" 1
 	lda [%i4] 32, %g1
 	
 ! 0 "" 2

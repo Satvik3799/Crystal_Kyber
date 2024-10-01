@@ -19,6 +19,19 @@
 
 volatile int volatile done = 0;
 
+
+uint32_t bit_reverse(uint32_t num, uint32_t logn) {
+    uint32_t rev_num = 0;
+    uint32_t i;
+    for (i = 0; i < logn; i++) {
+        if ((num >> i) & 1) {
+            rev_num |= 1 << (logn - 1 - i);
+        }
+    }
+    return rev_num;
+}
+
+
 uint32_t barret_reduction(uint32_t c1) {
     uint32_t p = 0;
     uint32_t m = 5039;
@@ -68,6 +81,45 @@ void ct_ntt(uint32_t *a, uint32_t *psis) {
     }
 }
 
+//QC - Passed
+void gen_tf(uint32_t *psis, uint32_t *inv_psis) {
+    uint32_t logn = (uint32_t)log2(n);
+    uint32_t tmp1[n], tmp2[n], positions[n];
+    uint32_t x;
+    for ( x = 0; x < n; x++) {
+        positions[x] = bit_reverse(x, logn);
+    }
+
+    uint32_t psi = 1, inv_psi = 1;
+    for ( x = 0; x < n; x++) {
+        tmp1[x] = psi;
+        tmp2[x] = inv_psi;
+        psi = (uint64_t)psi * psin % q;
+        inv_psi = (uint64_t)inv_psi * inv_psin % q;
+    }
+
+    for ( x = 0; x < n; x++) {
+        psis[x] = tmp1[positions[x]];
+        inv_psis[x] = tmp2[positions[x]];
+    }
+
+//      // Print the PSIS array
+//     printf(" Inside function, PSIS array:\n");
+//     for (uint32_t x = 0; x < n; x++) {
+//         printf("%u ", psis[x]);
+//     }
+//     printf("\n");
+
+//     // Print the INV_PSIS array
+//     printf("Inside function, INV_PSIS array:\n");
+//     for (uint32_t x = 0; x < n; x++) {
+//         printf("%u ", inv_psis[x]);
+//     }
+//     printf("\n");
+
+}
+
+
 void ntt_256(uint32_t *x, uint32_t *psis) {
     uint32_t xe[128], xo[128];
     uint32_t i;
@@ -92,16 +144,23 @@ int main(void)
 	uint8_t core_id, thread_id;
 	ajit_get_core_and_thread_id(&core_id, &thread_id);
 
-    uint32_t psis[n] =  {
-        1, 1729, 2580, 3289, 2642, 630, 1897, 848, 1062, 1919, 193, 797, 2786, 3260, 569, 1746, 296, 2447, 1339, 1476, 3046, 56, 2240, 1333, 1426, 2094, 535, 2882, 2393, 2879, 1974, 821, 289, 331, 3253, 1756, 1197, 2304, 2277, 2055, 650, 1977,
-        2513, 632, 2865, 33, 1320, 1915, 2319, 1435, 807, 452, 1438, 2868, 1534, 2402,
-        2647, 2617, 1481, 648, 2474, 3110, 1227, 910, 17, 2761, 583, 2649, 1637, 723,
-        2288, 1100, 1409, 2662, 3281, 233, 756, 2156, 3015, 3050, 1703, 1651, 2789, 1789,
-        1847, 952, 1461, 2687, 939, 2308, 2437, 2388, 733, 2337, 268, 641, 1584, 2298,
-        2037, 3220, 375, 2549, 2090, 1645, 1063, 319, 2773, 757, 2099, 561, 2466, 2594,
-        2804, 1092, 403, 1026, 1143, 2150, 2775, 886, 1722, 1212, 1874, 1029, 2110, 2935,
-        885, 2154
-        };
+
+    uint32_t psis[n], inv_psis[n];
+
+    // Generate pre-computed factors
+    gen_tf(psis, inv_psis);
+
+
+    // uint32_t psis[n] =  {
+    //     1, 1729, 2580, 3289, 2642, 630, 1897, 848, 1062, 1919, 193, 797, 2786, 3260, 569, 1746, 296, 2447, 1339, 1476, 3046, 56, 2240, 1333, 1426, 2094, 535, 2882, 2393, 2879, 1974, 821, 289, 331, 3253, 1756, 1197, 2304, 2277, 2055, 650, 1977,
+    //     2513, 632, 2865, 33, 1320, 1915, 2319, 1435, 807, 452, 1438, 2868, 1534, 2402,
+    //     2647, 2617, 1481, 648, 2474, 3110, 1227, 910, 17, 2761, 583, 2649, 1637, 723,
+    //     2288, 1100, 1409, 2662, 3281, 233, 756, 2156, 3015, 3050, 1703, 1651, 2789, 1789,
+    //     1847, 952, 1461, 2687, 939, 2308, 2437, 2388, 733, 2337, 268, 641, 1584, 2298,
+    //     2037, 3220, 375, 2549, 2090, 1645, 1063, 319, 2773, 757, 2099, 561, 2466, 2594,
+    //     2804, 1092, 403, 1026, 1143, 2150, 2775, 886, 1722, 1212, 1874, 1029, 2110, 2935,
+    //     885, 2154
+    //     };
     uint32_t s0[n2] = {0, 1, 0, 0, 0, 0, 1, 3327, 0, 3328, 3328, 1, 2, 1, 3328, 1, 1, 0, 3328, 0,
         1, 0, 3326, 3328, 1, 3327, 2, 0, 1, 1, 0, 0, 3328, 3328, 1, 3328, 1, 0, 0, 3328, 2, 
         2, 3327, 1, 2, 0, 0, 1, 0, 0, 0, 0, 1, 3328, 1, 1, 0, 0, 0, 0, 1, 1, 3328, 1, 0, 0, 
@@ -135,6 +194,7 @@ int main(void)
 		__ajit_serial_configure__ (1,0,0);
         uint16_t i;
 		// Print
+        ee_printf("\n");
 		ee_printf("Hello world from core:thread %d:%d!\n\n", core_id, thread_id);
 
         // Perform NTT transform
@@ -162,6 +222,7 @@ int main(void)
     uint16_t i;
 
     // Print
+    ee_printf("\n");
 	ee_printf("Hello world from core:thread %d:%d!\n\n", core_id, thread_id);
 
     ntt_256(s1, psis);
@@ -178,4 +239,3 @@ int main(void)
 	return(0);
 
 }
-

@@ -104,7 +104,7 @@ ajit_generic_interrupt_handler:
 	call	__ajit_store_word_mmu_bypass__, 0
 	 or	%o0, 1, %o0
 #APP
-! 51 "/home/satvik/AJIT/ajit-toolchain/AjitPublicResources/tools/ajit_access_routines_mt/src/ajit_mt_irc.c" 1
+! 51 "/home/ajit/ajit-toolchain/AjitPublicResources/tools/ajit_access_routines_mt/src/ajit_mt_irc.c" 1
 	ta 0;
 ! 0 "" 2
 #NO_APP
