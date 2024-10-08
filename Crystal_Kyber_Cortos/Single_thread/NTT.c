@@ -65,6 +65,24 @@ void ct_ntt(uint32_t *a, uint32_t *psis) {
     }
 }
 
+// void ct_ntt(uint16_t *a, uint16_t *psis, uint16_t start_index, uint16_t stride) {
+//     uint16_t l = (uint16_t)log2(n);
+//     uint16_t v = n / 2;
+//     uint16_t i,s;
+//     for ( i = 0; i < l; i++) {
+//         for ( s = start_index; s < v; s += stride) {
+//             uint16_t ie, io, iw;
+//             addr_gen(s, i, l, v, &ie, &io, &iw);
+//             uint16_t S = psis[iw];
+//             uint16_t U = a[ie];
+//             uint16_t V = a[io];
+//             uint16_t x, y;
+//             butterfly_dit(S, U, V, &x, &y);
+//             a[ie] = x;
+//             a[io] = y;
+//         }
+//     }
+// }
 
 //QC - Passed
 void gen_tf(uint32_t *psis, uint32_t *inv_psis) {
@@ -105,17 +123,17 @@ void gen_tf(uint32_t *psis, uint32_t *inv_psis) {
 }
 
 
-void ntt_256(uint32_t *x, uint32_t *psis) {
-    uint32_t xe[128], xo[128];
-    uint32_t i;
-    for ( i = 0; i < 128; i++) {
-        xe[i] = x[2 * i];
-        xo[i] = x[2 * i + 1];
-    }
-    ct_ntt(xe, psis);
-    ct_ntt(xo, psis);
-    for ( i = 0; i < 128; i++) {
-        x[i] = xe[i];
-        x[i + 128] = xo[i];
-    }
-}
+// void ntt_256(uint32_t *x, uint32_t *psis) {
+//     uint32_t xe[128], xo[128];
+//     uint32_t i;
+//     for ( i = 0; i < 128; i++) {
+//         xe[i] = x[2 * i];
+//         xo[i] = x[2 * i + 1];
+//     }
+//     ct_ntt(xe, psis);
+//     ct_ntt(xo, psis);
+//     for ( i = 0; i < 128; i++) {
+//         x[i] = xe[i];
+//         x[i + 128] = xo[i];
+//     }
+// }

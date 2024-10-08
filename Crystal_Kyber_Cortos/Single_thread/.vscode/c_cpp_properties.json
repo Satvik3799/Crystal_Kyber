@@ -1,0 +1,21 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/satvik/AJIT/ajit-toolchain/AjitPublicResources/tools/ajit_access_routines/include",
+                "/home/satvik/AJIT/ajit-toolchain/application_development/thread_channel/include",
+                "/home/satvik/AJIT/ajit-toolchain/Satvik/MTP/Single_thread/cortos_build/cortos_src",
+                "/home/satvik/AJIT/ajit-toolchain/Satvik/MTP/Single_thread/cortos_build/",
+                "/home/satvik/AJIT/ajit-toolchain/AjitPublicResources/tools/minimal_printf_timer/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "c++14",
+            "intelliSenseMode": "linux-clang-x64"
+        }
+    ],
+    "version": 4
+}

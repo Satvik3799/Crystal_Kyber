@@ -318,43 +318,5 @@ gen_tf:
 	b	.L31
 	 xor	%i5, %g1, %i5
 	.size	gen_tf, .-gen_tf
-	.align 4
-	.global ntt_256
-	.type	ntt_256, #function
-	.proc	020
-ntt_256:
-	save	%sp, -1120, %sp
-	mov	0, %g1
-	mov	%i0, %g2
-	add	%fp, -1024, %i4
-	add	%fp, -512, %i5
-.L53:
-	ld	[%g2], %g4
-	ld	[%g2+4], %g3
-	st	%g4, [%i4+%g1]
-	st	%g3, [%i5+%g1]
-	add	%g1, 4, %g1
-	cmp	%g1, 512
-	bne	.L53
-	 add	%g2, 8, %g2
-	mov	%i4, %o0
-	call	ct_ntt, 0
-	 mov	%i1, %o1
-	mov	%i5, %o0
-	call	ct_ntt, 0
-	 mov	%i1, %o1
-	mov	0, %g1
-.L54:
-	ld	[%i4+%g1], %g2
-	st	%g2, [%i0+%g1]
-	ld	[%i5+%g1], %g3
-	add	%i0, %g1, %g2
-	add	%g1, 4, %g1
-	cmp	%g1, 512
-	bne	.L54
-	 st	%g3, [%g2+512]
-	jmp	%i7+8
-	 restore
-	.size	ntt_256, .-ntt_256
 	.ident	"GCC: (Buildroot 2014.08) 4.7.4"
 	.section	.note.GNU-stack,"",@progbits
