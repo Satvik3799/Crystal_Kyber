@@ -1,0 +1,1 @@
+cd ./cortos_build/ && ./clean.sh
