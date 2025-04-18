@@ -555,7 +555,7 @@ cortos_printf("Crystal_kyber running\n");
 
     cortos_printf("Point wise multiplication start!");
     
-    // point_wise_mult(tcap_0_0, a_0_0, s_0, pwmf);     
+    point_wise_mult(tcap_0_0, a_0_0, s_0, pwmf);     
     uint16_t y1e[n], y1o[n], y2e[n], y2o[n], y3e[n], y3o[n];
     for ( i = 0; i < n; i++) {
         y1e[i] = a_0_0[i];

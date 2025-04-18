@@ -1,0 +1,6 @@
+Most of the variables have data type size close to 8 bytes, to fit for n=128 (2^7).
+
+
+
+
+Stack Size was the issue. Increase the stack siz, where we enter out main function name. in the Config.yaml file. 

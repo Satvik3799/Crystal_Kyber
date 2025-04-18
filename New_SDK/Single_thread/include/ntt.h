@@ -1,0 +1,24 @@
+#ifndef NTT_H
+#define NTT_H
+
+#include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <math.h>
+#include <cortos.h>
+
+#include <ajit_access_routines.h>
+
+#include "Crystal_Kyber.h"
+#include "utils.h"
+#include "ntt.h"
+#include "intt.h"
+
+#include "utils.h"
+
+void ct_ntt(uint16_t *a, uint16_t *psis);
+void ntt_256(uint16_t *x, uint16_t *psis);
+
+
+#endif

@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "ntt.h": "c",
+        "cortos.h": "c",
+        "thread_channel.h": "c",
+        "ajit_access_routines.h": "c",
+        "math.h": "c",
+        "crystal_kyber.h": "c",
+        "utils.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
+}
