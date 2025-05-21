@@ -30,6 +30,10 @@ void key_gen(uint16_t scap[2][256], uint16_t bcap[2][256], uint16_t psis[128], u
     
     // uint8_t total_steps = 13; //To print progrss bar.
 
+
+    uint64_t t_0;
+    uint64_t t_1;
+
     // cortos_printf("---------------------------------------------------------------------------------\n");
     // cortos_printf("[INFO]           :           Generating Private and Public Key!\n");
 
@@ -68,7 +72,14 @@ void key_gen(uint16_t scap[2][256], uint16_t bcap[2][256], uint16_t psis[128], u
 
     uint16_t i;
     // Step 3: Compute NTT for s and e
+
+    t_0 = __ajit_get_clock_time();
     ntt_256(s[0], psis); //print_progress();
+    t_1 = __ajit_get_clock_time();
+    cortos_printf("[RESULT]              :           NTT Time: %f %f\n", (double) (t_1 - t_0));
+
+
+    // ntt_256(s[0], psis); //print_progress();
     ntt_256(s[1], psis); //print_progress();
     ntt_256(e[0], psis); //print_progress();
     ntt_256(e[1], psis); //print_progress();
@@ -108,8 +119,8 @@ void key_gen(uint16_t scap[2][256], uint16_t bcap[2][256], uint16_t psis[128], u
 void encrypt(uint16_t *m, uint16_t b[2][256], uint16_t *psis, uint16_t *inv_psis, uint16_t *pwmf, uint16_t u[2][256], uint16_t *v) {
   
     uint16_t i;
-    uint64_t t_0;
-    uint64_t t_1;
+    // uint64_t t_0;
+    // uint64_t t_1;
 
     // uint16_t a_0_0[256] = {
     //     2166, 55, 2412, 1319, 1264, 1057, 1758, 1217, 1318, 2071, 3101, 2975, 692, 3192, 388, 351,
@@ -319,10 +330,10 @@ void encrypt(uint16_t *m, uint16_t b[2][256], uint16_t *psis, uint16_t *inv_psis
     // Compute the NTT of r
     // cortos_printf("\n[INFO]     :     Compute the NTT of r!\n");
 
-    t_0 = __ajit_get_clock_time();
+    // t_0 = __ajit_get_clock_time();
     ntt_256(r[0], psis); //print_progress();
-    t_1 = __ajit_get_clock_time();
-    cortos_printf("[RESULT]              :           NTT Time: %f %f\n", (double) (t_1 - t_0));
+    // t_1 = __ajit_get_clock_time();
+    // cortos_printf("[RESULT]              :           NTT Time: %f %f\n", (double) (t_1 - t_0));
 
 
     ntt_256(r[1], psis); //print_progress();
@@ -363,10 +374,10 @@ void encrypt(uint16_t *m, uint16_t b[2][256], uint16_t *psis, uint16_t *inv_psis
     // Compute the inverse NTT of ucap
     // cortos_printf("\n[INFO]     :     Compute the inverse NTT of ucap\n");
 
-    t_0 = __ajit_get_clock_time();
+    // t_0 = __ajit_get_clock_time();
     intt_256(ucap[0], inv_psis); //print_progress();
-    t_1 = __ajit_get_clock_time();
-    cortos_printf("[RESULT]              :           INTT Time: %f %f\n", (double) (t_1 - t_0));
+    // t_1 = __ajit_get_clock_time();
+    // cortos_printf("[RESULT]              :           INTT Time: %f %f\n", (double) (t_1 - t_0));
 
 
     intt_256(ucap[1], inv_psis); //print_progress();

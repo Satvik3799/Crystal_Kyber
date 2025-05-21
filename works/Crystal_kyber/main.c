@@ -10,10 +10,11 @@
 #include <ajit_access_routines.h>
 
 //satvik headers
-#include "Crystal_Kyber.h"
 #include "utils.h"
 #include "ntt.h"
 #include "intt.h"
+#include "Crystal_Kyber.h"
+
 
 // Define necessary constants
 #define q 3329
@@ -42,49 +43,49 @@ void setup()
 
 
 //Main fxn Thread 0
-uint8_t main_00()
+uint32_t main_00()
 {
 
-    uint16_t i,j;
+    uint32_t i,j;
 
     uint64_t t00_0;
     uint64_t t00_1;
 
     // Generate pre-computed factors
 
-    uint16_t psis[128], inv_psis[128], pwmf[128];
+    uint32_t psis[128], inv_psis[128], pwmf[128];
     gen_pwmf(pwmf);
 
     gen_tf(psis, inv_psis);
 
-    cortos_printf("\n[INFO]         :           Twiddle factors generated.\n");
+    cortos_printf("\n[INFO]         :           Pre-computed factors generated.\n");
 
-    // // Print the PWMF array
-    // cortos_printf("[INFO]           :           PWMF array:\n");
-    // for (i = 0; i < n; i++) {
-    //     cortos_printf("%u ", pwmf[i]);
-    // }
-    // cortos_printf("\n");
+    // Print the PWMF array
+    cortos_printf("[INFO]           :           PWMF array:\n");
+    for (i = 0; i < 5; i++) {
+        cortos_printf("%u ", pwmf[i]);
+    }
+    cortos_printf("\n");
     
-    // //  Print the PSIS array
-    // cortos_printf("[INFO]           :           PSIS array\n");
-    // for (i = 0; i < 128; i++) {
-    //     cortos_printf("%u, ", psis[i]);
-    // }
-    // cortos_printf("\n");
+    //  Print the PSIS array
+    cortos_printf("[INFO]           :           PSIS array\n");
+    for (i = 0; i < 5; i++) {
+        cortos_printf("%u, ", psis[i]);
+    }
+    cortos_printf("\n");
 
-    // // Print the INV_PSIS array
-    // cortos_printf("[INFO]           :           INV_PSIS array:\n");
-    // for (i = 0; i < n; i++) {
-    //     cortos_printf("%u ", inv_psis[i]);
-    // }
-    // cortos_printf("\n");
+    // Print the INV_PSIS array
+    cortos_printf("[INFO]           :           INV_PSIS array:\n");
+    for (i = 0; i < 5; i++) {
+        cortos_printf("%u ", inv_psis[i]);
+    }
+    cortos_printf("\n");
     
     
 
     //------------------------ To Test (Begin) ------------------------//
     // Allocate memory for the twiddle factors and point-wise multiplication factors
-    // uint16_t psis[128] = {
+    // uint32_t psis[128] = {
     //     1, 1729, 2580, 3289, 2642, 630, 1897, 848, 1062, 1919, 193, 797, 2786, 3260, 569, 1746, 296, 2447, 1339, 1476, 3046, 56, 2240, 1333, 1426, 2094, 535, 2882, 2393, 2879, 1974, 821, 289, 331, 3253, 1756, 1197, 2304, 2277, 2055, 650, 1977,
     //     2513, 632, 2865, 33, 1320, 1915, 2319, 1435, 807, 452, 1438, 2868, 1534, 2402,
     //     2647, 2617, 1481, 648, 2474, 3110, 1227, 910, 17, 2761, 583, 2649, 1637, 723,
@@ -94,7 +95,7 @@ uint8_t main_00()
     //     2804, 1092, 403, 1026, 1143, 2150, 2775, 886, 1722, 1212, 1874, 1029, 2110, 2935,
     //     885, 2154
     // };
-    // uint16_t inv_psis[128] = {
+    // uint32_t inv_psis[128] = {
     //     1, 1600, 40, 749, 2481, 1432, 2699, 687, 1583, 2760, 69, 543, 2532, 3136,
     //     1410, 2267, 2508, 1355, 450, 936, 447, 2794, 1235, 1903, 1996, 1089, 3273, 283,
     //     1853, 1990, 882, 3033, 2419, 2102, 219, 855, 2681, 1848, 712, 682, 927, 1795,
@@ -106,7 +107,7 @@ uint8_t main_00()
     //     279, 314, 1173, 2573, 3096, 48, 667, 1920, 2229, 1041, 2606, 1692, 680, 2746,
     //     568, 3312
     // };
-    // uint16_t pwmf[128] = {
+    // uint32_t pwmf[128] = {
     //     17, 3312, 2761, 568, 583, 2746, 2649, 680, 1637, 1692, 723, 2606, 2288, 1041,
     //     1100, 2229, 1409, 1920, 2662, 667, 3281, 48, 233, 3096, 756, 2573, 2156, 1173,
     //     3015, 314, 3050, 279, 1703, 1626, 1651, 1678, 2789, 540, 1789, 1540, 1847, 1482,
@@ -124,19 +125,17 @@ uint8_t main_00()
     //------------------------ To Test (End) ------------------------//
 
     // Generate Private Key (s) and Public Key (b)
-    uint16_t scap[2][256];
-    uint16_t bcap[2][256];
+    uint32_t scap[2][256];
+    uint32_t bcap[2][256];
 
     t00_0 =__ajit_get_clock_time();
     key_gen(scap, bcap, psis, pwmf);
     t00_1 = __ajit_get_clock_time();
-	cortos_printf("[RESULT]              :           Key generation Time: %f %f\n", (double) (t00_1 - t00_0));
+	cortos_printf("[RESULT]              :           Key generation Time: %f\n", (double) (t00_1 - t00_0));
     
-
-
     cortos_printf("[INFO]           :           Public Key and Secret Key generated!\n");
 
-    // uint16_t scap[2][256] = {
+    // uint32_t scap[2][256] = {
     //     {
     //         1291, 53, 170, 2072, 1204, 1473, 972, 344, 2474, 2826, 1913, 1328, 207, 3308, 2032, 1126,
     //         652, 1853, 1640, 493, 377, 2634, 1552, 1406, 2509, 483, 3270, 912, 906, 3062, 93, 691,
@@ -175,7 +174,7 @@ uint8_t main_00()
     //     }
     // };
 
-    // uint16_t bcap[2][256] = {
+    // uint32_t bcap[2][256] = {
     //     {
     //         778, 423, 3122, 879, 2252, 1793, 2000, 2772, 215, 2994, 3292, 1001, 215, 2047, 2792, 2356,
     //         1778, 3111, 554, 1692, 1488, 2701, 839, 182, 3289, 417, 3039, 2664, 2875, 2682, 2222, 2590,
@@ -217,28 +216,42 @@ uint8_t main_00()
 
 
 
-    // //  Display private key (scap) and public key (bcap)
-    // cortos_printf("[RESULT]           :            Private Key (scap):\n");
-    // for ( i = 0; i < 2; i++) {
-    //     for ( j = 0; j < 256; j++) {
-    //         cortos_printf("%u ", scap[i][j]);
-    //     }
-    //     cortos_printf("\n");
-    // }
-    // cortos_printf("\n");
+    //  Display private key (scap) and public key (bcap)
+    cortos_printf("[RESULT]           :            Private Key (scap):\n");
+    for ( i = 0; i < 2; i++) {
+        for ( j = 0; j < 5; j++) {
+            cortos_printf("%u ", scap[i][j]);
+        }
+        cortos_printf("\n");
+    }
+    cortos_printf("\n");
 
-    // cortos_printf("\n[RESULT]           :            Public Key (bcap):\n");
-    // for ( i = 0; i < 2; i++) {
-    //     for ( j = 0; j < 256; j++) {
-    //         cortos_printf("%u ", bcap[i][j]);
-    //     }
-    //     cortos_printf("\n");
-    // }
-    // cortos_printf("\n");
+    cortos_printf("\n[RESULT]           :            Public Key (bcap):\n");
+    for ( i = 0; i < 2; i++) {
+        for ( j = 0; j < 5; j++) {
+            cortos_printf("%u ", bcap[i][j]);
+        }
+        cortos_printf("\n");
+    }
+    cortos_printf("\n");
 
-    // // input message
-    // uint8_t m[n2];
-    //Fixed input
+    // input message
+    uint32_t m[n2] = {
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    };
+
     // for (i = 0; i < n2; i++) {
     //     if (i < 64) {
     //         m[i] = 0;
@@ -262,113 +275,113 @@ uint8_t main_00()
     //     m[i] = rand() % 2; // Generate either 0 or 1 randomly
     // }
 
-    // Initialize the array with values from 0 to 255
-    // for (uint16_t i = 0; i < n2; i++) {
+    // // Initialize the array with values from 0 to 255
+    // for (uint32_t i = 0; i < n2; i++) {
     //     m[i] = i;
     // }
 
-    // Print the original message array
+    // // Print the original message array
 
-    // cortos_printf("\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("Original Message:\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // for ( i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", m[i]);
-    // }
-    // cortos_printf("\n");
+    cortos_printf("\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("Original Message:\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    for ( i = 0; i < 256; i++) {
+        cortos_printf("%u ", m[i]);
+    }
+    cortos_printf("\n");
 
-    // cortos_printf("\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("\n");
+    cortos_printf("\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("\n");
 
-    // // Encryption
-    // uint16_t u[2][256];
-    // uint16_t v[256];
-    // uint16_t encoded_m[n2];
-    // for ( i = 0; i < n2; i++) {
-    //     encoded_m[i] = 1664 * m[i];
-    // }
+    // Encryption
+    uint32_t u[2][256];
+    uint32_t v[256];
+    uint32_t encoded_m[n2];
+    for ( i = 0; i < n2; i++) {
+        encoded_m[i] = 1664 * m[i];
+    }
 
-    // cortos_printf("\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("[INFO]             :             Encryption of the message started.\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("[INFO]             :             Encryption of the message started.\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
 
     
-    // t00_0 =__ajit_get_clock_time();
-    // encrypt(encoded_m, bcap, psis, inv_psis, pwmf, u, v);
-    // t00_1 = __ajit_get_clock_time();
-	// cortos_printf("[RESULT]           :           Encryption Time: %f %f\n", (double) (t00_1 - t00_0));
+    t00_0 =__ajit_get_clock_time();
+    encrypt(encoded_m, bcap, psis, inv_psis, pwmf, u, v);
+    t00_1 = __ajit_get_clock_time();
+	cortos_printf("[RESULT]           :           Encryption Time: %f\n", (double) (t00_1 - t00_0));
     
 
-    // // Display encrypted message (u and v)
-    // cortos_printf("[RESULT]           :           Encrypted Message u\n");
-    // for ( i = 0; i < 2; i++) {
-    //     for ( j = 0; j < 256; j++) {
-    //         cortos_printf("%u ", u[i][j]);
-    //     }
-    //     cortos_printf("\n");
-    // }
-    // cortos_printf("\n");
+    // Display encrypted message (u and v)
+    cortos_printf("[RESULT]           :           Encrypted Message u\n");
+    for ( i = 0; i < 2; i++) {
+        for ( j = 0; j < 5; j++) {
+            cortos_printf("%u ", u[i][j]);
+        }
+        cortos_printf("\n");
+    }
+    cortos_printf("\n");
 
 
-    // cortos_printf("[RESULT]           :           Encrypted Message v\n");
-    // for ( i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", v[i]);
-    // }
+    cortos_printf("[RESULT]           :           Encrypted Message v\n");
+    for ( i = 0; i < 5; i++) {
+        cortos_printf("%u ", v[i]);
+    }
 
-    // cortos_printf("\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("\n");
+    cortos_printf("\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("\n");
 
-    // // Decryption
-    // uint16_t d[256];
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("[INFO]              :           Decryption of the message started.\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
+    // Decryption
+    uint32_t d[256];
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("[INFO]              :           Decryption of the message started.\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
     
-    // t00_0 =__ajit_get_clock_time();
-    // decrypt(scap, u, v, psis, inv_psis, pwmf, d);
-    // t00_1 = __ajit_get_clock_time();
-	// cortos_printf("[RESULT]           :           Decryption Time: %f %f\n", (double) (t00_1 - t00_0));
+    t00_0 =__ajit_get_clock_time();
+    decrypt(scap, u, v, psis, inv_psis, pwmf, d);
+    t00_1 = __ajit_get_clock_time();
+	cortos_printf("[RESULT]           :           Decryption Time: %f %f\n", (double) (t00_1 - t00_0));
     
 
 
-    // // Decode message
-    // uint16_t md[256];
-    // for ( i = 0; i < 256; i++) {
-    //     if (d[i] > 832 && d[i] < 2467) {
-    //         md[i] = 1;
-    //     } else {
-    //         md[i] = 0;
-    //     }
-    // }
+    // Decode message
+    uint32_t md[256];
+    for ( i = 0; i < 256; i++) {
+        if (d[i] > 832 && d[i] < 2467) {
+            md[i] = 1;
+        } else {
+            md[i] = 0;
+        }
+    }
 
-    // // Display decrypted message
-    // cortos_printf("[RESULT]           :           Decrypted Message.\n");
-    // for ( i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", md[i]);
-    // }
+    // Display decrypted message
+    cortos_printf("[RESULT]           :           Decrypted Message.\n");
+    for ( i = 0; i < 256; i++) {
+        cortos_printf("%u ", md[i]);
+    }
     
-    // cortos_printf("\n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("\n");
+    cortos_printf("\n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("\n");
 
 
-    // // Check if original message and decoded message are the same
-    // bool match = true;
-    // for ( i = 0; i < n2; i++) {
-    //     if (m[i] != md[i]) {
-    //         match = false;
-    //         break;
-    //     }
-    // }
-    // cortos_printf(" \n");
-    // cortos_printf(" \n");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
-    // cortos_printf("[RESULT]           :             Original and decoded messages match: %s\n", match ? "true" : "false");
-    // cortos_printf("---------------------------------------------------------------------------------\n");
+    // Check if original message and decoded message are the same
+    bool match = true;
+    for ( i = 0; i < n2; i++) {
+        if (m[i] != md[i]) {
+            match = false;
+            break;
+        }
+    }
+    cortos_printf(" \n");
+    cortos_printf(" \n");
+    cortos_printf("---------------------------------------------------------------------------------\n");
+    cortos_printf("[RESULT]           :             Original and decoded messages match: %s\n", match ? "true" : "false");
+    cortos_printf("---------------------------------------------------------------------------------\n");
 
 
 	cortos_printf("[INFO]              :           close the channel..\n");
@@ -378,12 +391,10 @@ uint8_t main_00()
 
 }
 
-uint8_t main_01 ()
+uint32_t main_01 ()
 {
 	void (*__fn) (void*);
 	void *__arg;
-
-    uint8_t i;
 
 	// cortos_printf("------------------------------------------------------\n");
 	cortos_printf("[INFO]           :           Entered main_01\n");
@@ -394,7 +405,6 @@ uint8_t main_01 ()
   
         while(getChannelJob(&tc, (void**) &__fn, (void**) &__arg))
             {
-                cortos_printf("[INFO]           :           job no. - %d\n", i);
             }
 
             if(__fn != NULL)

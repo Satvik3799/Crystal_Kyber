@@ -12,7 +12,6 @@
 #include <thread_channel.h>
 #include <ajit_access_routines.h>
 
-#include "Crystal_Kyber.h"
 #include "utils.h"
 #include "ntt.h"
 #include "intt.h"
@@ -104,6 +103,26 @@ void key_gen(uint16_t scap[2][256], uint16_t bcap[2][256], uint16_t psis[128], u
         scap[0][i] = s[0][i];
         scap[1][i] = s[1][i];
     }
+
+
+    //  Display private key (scap) and public key (bcap)
+    cortos_printf("[RESULT]           :            Private Key (scap):\n");
+    for ( i = 0; i < 2; i++) {
+        for ( j = 0; j < 5; j++) {
+            cortos_printf("%u ", scap[i][j]);
+        }
+        cortos_printf("\n");
+    }
+    cortos_printf("\n");
+
+    cortos_printf("\n[RESULT]           :            Public Key (bcap):\n");
+    for ( i = 0; i < 2; i++) {
+        for ( j = 0; j < 5; j++) {
+            cortos_printf("%u ", bcap[i][j]);
+        }
+        cortos_printf("\n");
+    }
+    cortos_printf("\n");
 
     // //print_progress();
     // cortos_printf("---------------------------------------------------------------------------------\n");
