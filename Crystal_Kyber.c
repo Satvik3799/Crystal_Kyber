@@ -74,13 +74,13 @@ void key_gen(uint32_t scap[2][256], uint32_t bcap[2][256], uint32_t psis[128], u
     uint32_t i, j;
     // Step 3: Compute NTT for s and e
     t_0 = __ajit_get_clock_time();
-    ntt_top(s[0], psis); //print_progress();
+    ntt_256(s[0], psis); //print_progress();
     t_1 = __ajit_get_clock_time();
     cortos_printf("[RESULT]              :           NTT Time: %f %f\n", (double) (t_1 - t_0));
 
-    ntt_top(s[1], psis); //print_progress();
-    ntt_top(e[0], psis); //print_progress();
-    ntt_top(e[1], psis); //print_progress();
+    ntt_256(s[1], psis); //print_progress();
+    ntt_256(e[0], psis); //print_progress();
+    ntt_256(e[1], psis); //print_progress();
 
     // Step 4: Compute tcap
     uint32_t tcap[2][2][256];
@@ -351,11 +351,11 @@ void encrypt(uint32_t *m, uint32_t b[2][256], uint32_t *psis, uint32_t *inv_psis
 
     
     // t_0 = __ajit_get_clock_time();
-    ntt_top(r[0], psis); //print_progress();
+    ntt_256(r[0], psis); //print_progress();
     // t_1 = __ajit_get_clock_time();
     // cortos_printf("[RESULT]              :           NTT Time: %f %f\n", (double) (t_1 - t_0));
 
-    ntt_top(r[1], psis); //print_progress();
+    ntt_256(r[1], psis); //print_progress();
 
   
     // Compute the point-wise multiplications
@@ -394,11 +394,11 @@ void encrypt(uint32_t *m, uint32_t b[2][256], uint32_t *psis, uint32_t *inv_psis
     // cortos_printf("\n[INFO]     :     Compute the inverse NTT of ucap\n");
 
     // t_0 = __ajit_get_clock_time();
-    intt_top(ucap[0], inv_psis); //print_progress();
+    intt_256(ucap[0], inv_psis); //print_progress();
     // t_1 = __ajit_get_clock_time();
     // cortos_printf("[RESULT]              :           INTT Time: %f %f\n", (double) (t_1 - t_0));
 
-    intt_top(ucap[1], inv_psis); //print_progress();
+    intt_256(ucap[1], inv_psis); //print_progress();
 
     // Add the error terms
     for ( i = 0; i < 256; i++) {
@@ -418,7 +418,7 @@ void encrypt(uint32_t *m, uint32_t b[2][256], uint32_t *psis, uint32_t *inv_psis
 
     // Compute the inverse NTT of by
     // cortos_printf("\n[INFO]     :     Compute the inverse NTT of by\n");
-    intt_top(by, inv_psis); //print_progress();
+    intt_256(by, inv_psis); //print_progress();
 
     // Compute the final v
     for ( i = 0; i < 256; i++) {
@@ -440,8 +440,8 @@ void decrypt(uint32_t s[2][256], uint32_t u[2][256], uint32_t *v, uint32_t *psis
 
  
     // Compute the NTT of u
-    ntt_top(u[0], psis); //print_progress();
-    ntt_top(u[1], psis); //print_progress();
+    ntt_256(u[0], psis); //print_progress();
+    ntt_256(u[1], psis); //print_progress();
 
  
 
@@ -456,7 +456,7 @@ void decrypt(uint32_t s[2][256], uint32_t u[2][256], uint32_t *v, uint32_t *psis
     }; //print_progress();
 
     // Compute the inverse NTT of uy
-    intt_top(uy, inv_psis); //print_progress();
+    intt_256(uy, inv_psis); //print_progress();
 
     // Compute the final decrypted message d
     for ( i = 0; i < 256; i++) {
