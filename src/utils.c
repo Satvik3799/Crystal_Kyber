@@ -4,10 +4,6 @@
 #include <stdint.h>
 #include <math.h>
 
-#include <cortos.h>
-#include <thread_channel.h>
-#include <ajit_access_routines.h>
-
 #include "utils.h"
 #include "ntt.h"
 #include "intt.h"
@@ -20,46 +16,6 @@
 #define inv_n 3303
 #define psin 17
 #define inv_psin 1175
-
-void set_NTT_Args(thread_args *args, uint32_t *x, uint32_t *psis)
-{
-	args->x = x;
-	args->psis = psis;
-}
-
-// //To track progress
-// #define total_steps 50 
-// uint8_t progress_step = 0;
-// void print_progress() {
-//     progress_step++;
-//     cortos_printf(".");
-//     if (progress_step == total_steps) {
-//         cortos_printf("100%%\n");
-//     }
-// }
-
-
-// Function to print a 1D array
-// void print_1d_array(uint32_t arr[], uint32_t size) {
-//     uint32_t i;
-//     for ( i = 0; i < size; i++) {
-//         cortos_printf("%d ", arr[i]);
-//     }
-//     cortos_printf("\n");
-// }
-
-// Function to print a 2D array with row and column indices
-// void print2DArray(uint32_t arr[2][256], int rows, int cols) {
-//     uint32_t i, j;
-//     for ( i = 0; i < rows; i++) {
-//         cortos_printf("arr[%d]: { ", i);
-//         for ( j = 0; j < cols; j++) {
-//             cortos_printf("%d ", arr[i][j]);
-//         }
-//         cortos_printf("}\n"); // Newline after each row
-//     }
-// }
-
 
 uint32_t bit_reverse(uint32_t num, uint32_t logn) {
     uint32_t rev_num = 0;
@@ -113,19 +69,19 @@ void point_wise_mult(uint32_t *y3, uint32_t *y1, uint32_t *y2, uint32_t *pwmf) {
     uint32_t i;
 
     // Print the input arrays
-    // cortos_printf("Input array y1:\n");
+    // printf("Input array y1:\n");
     // for (uint32_t i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", y1[i]);
+    //     printf("%u ", y1[i]);
     // }
-    // cortos_printf("\n\nInput array y2:\n");
+    // printf("\n\nInput array y2:\n");
     // for (uint32_t i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", y2[i]);
+    //     printf("%u ", y2[i]);
     // }
-    // cortos_printf("\n\nInput array pwmf:\n");
+    // printf("\n\nInput array pwmf:\n");
     // for (uint32_t i = 0; i < 128; i++) {
-    //     cortos_printf("%u ", pwmf[i]);
+    //     printf("%u ", pwmf[i]);
     // }
-    // cortos_printf("\n");
+    // printf("\n");
     
     for ( i = 0; i < n; i++) {
         y1e[i] = y1[i];
@@ -143,11 +99,11 @@ void point_wise_mult(uint32_t *y3, uint32_t *y1, uint32_t *y2, uint32_t *pwmf) {
     }; //print_progress();
 
     // // Print the result
-    // cortos_printf("Result of point_wise_mult function:\n");
+    // printf("Result of point_wise_mult function:\n");
     // for (uint32_t i = 0; i < 256; i++) {
-    //     cortos_printf("%u ", y3[i]);
+    //     printf("%u ", y3[i]);
     // }
-    // cortos_printf("\n");
+    // printf("\n");
 
 };
 
@@ -176,18 +132,18 @@ void gen_tf(uint32_t *psis, uint32_t *inv_psis) {
     }; ////print_progress();
 
 //      // Print the PSIS array
-//     cortos_printf(" Inside function, PSIS array:\n");
+//     printf(" Inside function, PSIS array:\n");
 //     for (uint32_t x = 0; x < n; x++) {
-//         cortos_printf("%u ", psis[x]);
+//         printf("%u ", psis[x]);
 //     }
-//     cortos_printf("\n");
+//     printf("\n");
 
 //     // Print the INV_PSIS array
-//     cortos_printf("Inside function, INV_PSIS array:\n");
+//     printf("Inside function, INV_PSIS array:\n");
 //     for (uint32_t x = 0; x < n; x++) {
-//         cortos_printf("%u ", inv_psis[x]);
+//         printf("%u ", inv_psis[x]);
 //     }
-//     cortos_printf("\n");
+//     printf("\n");
 
 };
 
@@ -213,10 +169,10 @@ void gen_pwmf(uint32_t *pwmf) {
     } ////print_progress();
     
     // Print the PWMF array
-    // cortos_printf(" Inside Function, PWMF array:\n");
+    // printf(" Inside Function, PWMF array:\n");
     // for (uint32_t i = 0; i < n; i++) {
-    //     cortos_printf("%u ", pwmf[i]);
+    //     printf("%u ", pwmf[i]);
     // }
-    // cortos_printf("\n");
+    // printf("\n");
 }
 

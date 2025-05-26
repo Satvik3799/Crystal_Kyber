@@ -7,11 +7,6 @@
 #include <stdint.h>
 #include <math.h>
 
-
-#include <cortos.h>
-#include <thread_channel.h>
-#include <ajit_access_routines.h>
-
 #include "Crystal_Kyber.h"
 #include "utils.h"
 #include "ntt.h"

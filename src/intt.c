@@ -1,16 +1,9 @@
 #include <stdint.h>
-#include "utils.h"
-#include "math.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <math.h>
-
-#include <cortos.h>
-#include <thread_channel.h>
-#include <ajit_access_routines.h>
-
 
 #include "utils.h"
 #include "ntt.h"
@@ -27,11 +20,11 @@
 
 void gs_intt(uint32_t *a, uint32_t *inv_psis) {
     uint32_t i, s;
-    // cortos_printf("Inside GS_INTT");
+    // printf("Inside GS_INTT");
     // for( i = 0; i < 5; i++) {
-    //     cortos_printf("%d ", inv_psis[i]);
+    //     printf("%d ", inv_psis[i]);
     // }
-    // cortos_printf("\n");
+    // printf("\n");
     uint32_t l = (uint32_t)log2(n);
     uint32_t v = n / 2;
 
@@ -56,7 +49,7 @@ void gs_intt(uint32_t *a, uint32_t *inv_psis) {
 
 
 void intt_256(uint32_t *y, uint32_t *inv_psis) {
-    // cortos_printf("Inside INTT");
+    // printf("Inside INTT");
     uint32_t ye[n], yo[n];
     uint32_t i;
     for ( i = 0; i < n; i++) {
@@ -72,7 +65,7 @@ void intt_256(uint32_t *y, uint32_t *inv_psis) {
 }
 
 void intt_512(uint32_t *y, uint32_t *inv_psis) {
-    // cortos_printf("Inside INTT");
+    // printf("Inside INTT");
     uint32_t ye[n], yo[n];
     uint32_t i;
     for ( i = 0; i < n; i++) {
@@ -84,90 +77,6 @@ void intt_512(uint32_t *y, uint32_t *inv_psis) {
     for ( i = 0; i < n; i++) {
         y[2 * i] = ye[i];
         y[2 * i + 1] = yo[i];
-    }
-}
-
-
-void intt_thread(void* args){
-    uint32_t *x = ((thread_args*) args) -> x;
-    uint32_t *inv_psis = ((thread_args*) args) -> psis;
-    // uint32_t i;
-    
-    // cortos_printf("[INFO]  :   Performing INTT on:\n");
-    // Print the received input
-    // for( i = 0; i < n; i++) {
-    //     cortos_printf("%d ", x[i]);
-    // }
-    // cortos_printf("\n");
-    
-    // Perform NTT
-    gs_intt(x, inv_psis);
-
-    // cortos_printf("[INFO]  :   NTT_THREAD running\n");
-}
-
-void intt_top(uint32_t *x, uint32_t *inv_psis){
-
-    volatile ThreadChannel* volatile tc_ptr = &tc;
-    volatile thread_args volatile intt_args;
-    uint32_t i;
-    uint32_t xe[n], xo[n];
-
-    // cortos_printf("[INFO]  :    NTT_TOP Entered\n");
-
-    // cortos_printf("[INFO]  :    X Array\n");
-    // for(i = 0; i < n; i++){
-    //     cortos_printf("%d, ", x[i]);
-    // }
-
-    // cortos_printf("\n");
-
-    // cortos_printf("[INFO]  :    PSIS Array\n");
-
-    // for(i = 0; i < n; i++){
-    //     cortos_printf("%d, ", psis[i]);
-    // }
-
-
-    // cortos_printf("\n");
-
-
-    //Divide the array
-    for ( i = 0; i < n; i++) {
-        xe[i] = x[i];
-        xo[i] = x[i + n];
-    };
-
-    // for(i = 0; i < n; i++){
-    //     cortos_printf("xe Array [%d] - %d\n", i, xe[i]);
-    // }
-
-    // for(i = 0; i < n; i++){
-    //     cortos_printf("xo Array [%d] - %d\n", i, xo[i]);
-    // }
-
-    // cortos_printf("[INFO]  :   NTT on Even indices - running on a thread\n");
-    
-    set_NTT_Args(&intt_args, xe, inv_psis);
-	while(scheduleChannelJob(tc_ptr, (void*) intt_thread, &intt_args))
-	{
-        // cortos_printf("[INFO] : NTT_TOP still running 1\n");
-	};   
-
-    // cortos_printf("[INFO]  :   NTT on Odd indices - running locally\n");
-    gs_intt(xo, inv_psis);
-
-	void* vptr = NULL;
-	while(getChannelResponse(tc_ptr, &vptr))
-	{
-        // cortos_printf("[INFO] : NTT_TOP waiting for response\n");
-	}
-
-    // cortos_printf("[INFO] : NTT_TOP Exiting\n");
-
-    for ( i = 0; i < n; i++) {
-        x[2 * i] = xe[i];
-        x[2 * i + 1] = xo[i];
     }
 }
 

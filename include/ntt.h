@@ -7,10 +7,6 @@
 #include <stdint.h>
 #include <math.h>
 
-#include <cortos.h>
-#include <thread_channel.h>
-#include <ajit_access_routines.h>
-
 #include "utils.h"
 #include "ntt.h"
 #include "intt.h"
@@ -25,9 +21,5 @@
 
 void ct_ntt(uint32_t *a, uint32_t *psis);
 void ntt_256(uint32_t *x, uint32_t *psis);
-void ntt_thread(void* args);
-void ntt_top(uint32_t *x, uint32_t *psis);
-
-
 
 #endif
