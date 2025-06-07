@@ -1,8 +1,12 @@
 # Crystal_Kyber
 Crystal Kyber C code.
-Compile with gcc, cc etc
+Compile with:
 
-run with 
+```
+gcc -I ./ -I include -I src Crystal_Kyber.c src/*.c -o Crystal_Kyber
+```
+
+run with: 
 ```
 ./Crystal_kyber
 ```

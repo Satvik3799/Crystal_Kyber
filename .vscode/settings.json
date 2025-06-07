@@ -1,3 +1,14 @@
 {
-    "C_Cpp.errorSquiggles": "enabled"
+    "C_Cpp.errorSquiggles": "enabled",
+    "files.associations": {
+        "stdio.h": "c",
+        "math.h": "c",
+        "stdlib.h": "c",
+        "ranges": "c",
+        "utils.h": "c",
+        "intt.h": "c",
+        "ntt.h": "c",
+        "stdint.h": "c"
+    },
+    "idf.pythonInstallPath": "/usr/bin/python"
 }

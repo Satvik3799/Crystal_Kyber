@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Crystal_Kyber",
+      "type": "shell",
+      "command": "gcc",
+      "args": [
+        "-I", "${workspaceFolder}/include",
+        "-I", "${workspaceFolder}/src",
+        "${workspaceFolder}/Crystal_Kyber.c",
+        "${workspaceFolder}/src/intt.c",
+        "${workspaceFolder}/src/keccak.c",
+        "${workspaceFolder}/src/ntt.c",
+        "${workspaceFolder}/src/utils.c",
+        "-o", "${workspaceFolder}/Crystal_Kyber"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}
