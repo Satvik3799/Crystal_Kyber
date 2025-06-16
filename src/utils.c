@@ -1,16 +1,16 @@
 #include <defs.h>
 
-static const uint32_t ALLOWED_VALUES[6] = { 0, 1, 2, 3, 3327, 3328 };
+static const uint32_t ALLOWED_VALUES[5] = { 0, 1, 2, 3, 4};
 
 void generate_2D(uint32_t r[2][256]) {
     for (uint32_t i = 0; i < 2; ++i)
         for (uint32_t j = 0; j < 256; ++j)
-            r[i][j] = ALLOWED_VALUES[rand() % 6];
+            r[i][j] = ALLOWED_VALUES[rand() % 5];
 };
 
 void generate_1D(uint32_t r1[256]) {
     for (uint32_t j = 0; j < 256; ++j)
-        r1[j] = ALLOWED_VALUES[rand() % 6];
+        r1[j] = ALLOWED_VALUES[rand() % 5];
 }
 
 uint32_t bit_reverse(uint32_t num, uint32_t logn) {
